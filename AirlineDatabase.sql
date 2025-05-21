@@ -274,3 +274,69 @@ INSERT INTO Airport_Airplane_Type (Airport_code, Airplane_Type_Name) VALUES
 (5, 'Embraer E195');     -- Prince Mohammad bin Abdulaziz International Airport
 
 SELECT * FROM Airport_Airplane_Type;
+
+-----------------------------------------------------------------------TASK 8-------------------------------------------------------
+--1. Display each flight leg's ID, schedule, and the name of the airplane assigned to it. 
+SELECT * FROM Flight_Leg;
+SELECT * FROM Airplane;
+
+SELECT FL.Leg_Number as 'Flight Leg ID', FL.Scheduled_arr_time as 'Schedule Arr', FL.Scheduled_dep_time as 'Schedule Dep', AP.Airplane_id as 'Airplane Assigned To'
+FROM Flight_Leg FL, Airplane AP
+WHERE AP.Airplane_id = FL.Airport_code;
+
+--2. Display all flight numbers and the names of the departure and arrival airports.
+SELECT * FROM Flight;
+SELECT * FROM Airport;
+SELECT * FROM Flight_Leg;
+
+SELECT F.Flight_Number, AP.Airport_Name
+FROM Flight F INNER JOIN Flight_Leg FL ON F.Flight_Number = FL.Flight_Number INNER JOIN Airport AP ON AP.Airport_code = FL.Airport_code;
+
+--3. Display all reservation data with the name and phone of the customer who made each booking. 
+SELECT * FROM Seat;
+
+--4. Display IDs and locations of flights departing from 'CAI' or 'DXB'. 
+SELECT * FROM Flight_Leg;
+SELECT * FROM Flight;
+
+--5. Display full data of flights whose names start with 'A'. 
+SELECT * FROM Flight;
+
+SELECT * FROM Flight WHERE Flight.Airline LIKE '%s';
+
+--6. List customers who have bookings with total payment between 3000 and 5000. 
+--7. Retrieve all passengers on 'Flight 110' who booked more than 2 seats. 
+SELECT * FROM Flight;
+SELECT * FROM Seat;
+SELECT * FROM Flight_Leg;
+SELECT * FROM Airport;
+
+SELECT S.C_Name as 'Customer Name', S.C_phone as 'Customer Phone'
+FROM Flight F INNER JOIN Flight_Leg FL ON F.Flight_Number = FL.Flight_Number 
+INNER JOIN Airport AP ON AP.Airport_code = FL.Airport_code 
+INNER JOIN Seat S ON AP.Airport_code = S.Airport_code
+WHERE F.Flight_Number = 1;
+
+--8. Find names of passengers whose booking was handled by agent "Youssef Hamed". 
+--9. Display each passenger’s name and the flights they booked, ordered by flight date. 
+SELECT * FROM Flight;
+SELECT * FROM Seat;
+SELECT * FROM Flight_Leg;
+SELECT * FROM Airport;
+
+SELECT S.C_Name as 'Customer Name', F.Flight_Number as 'Flight Number'
+FROM Flight F INNER JOIN Flight_Leg FL ON F.Flight_Number = FL.Flight_Number 
+INNER JOIN Airport AP ON AP.Airport_code = FL.Airport_code 
+INNER JOIN Seat S ON AP.Airport_code = S.Airport_code
+ORDER BY S.Leg_Instance_Date;
+
+--10. For each flight departing from 'Cairo', display the flight number, departure time, and airline name. 
+SELECT * FROM Flight;
+SELECT * FROM Flight_Leg;
+
+SELECT F.Flight_Number, FL.Scheduled_dep_time, FL.Scheduled_arr_time, F.Airline
+FROM Flight F, Flight_Leg FL
+WHERE F.Flight_Number = FL.Flight_Number;
+
+--11. Display all staff members who are assigned as supervisors for flights. 
+--12. Display all bookings and their related passengers, even if some bookings are unpaid. 
