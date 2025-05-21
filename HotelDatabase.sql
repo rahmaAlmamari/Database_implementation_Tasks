@@ -150,3 +150,102 @@ INSERT INTO Staff_Check_Out_Booking (Booking_id, Staff_id, Check_in, Check_out, 
 (5, 5, '2025-07-05', '2025-07-09', 5, 5);
 
 SELECT * FROM Staff_Check_Out_Booking;
+
+----------------------------------------------------------------------TASK 8-------------------------------------------------
+--1. Display hotel ID, name, and the name of its manager. 
+SELECT * FROM Branch;
+SELECT * FROM Staff;
+
+SELECT B.Branch_id as 'Hotel ID', B.Branch_Name as 'Hotel Name', S.Staff_Name as 'Manager Name'
+FROM Branch B, Staff S
+WHERE B.Branch_id = S.Branch_id;
+
+--2. Display hotel names and the rooms available under them. 
+SELECT * FROM Branch;
+SELECT * FROM Rooms;
+
+SELECT  B.Branch_Name as 'Hotel Name', R.Room_Number as 'Rooms Available'
+FROM Branch B, Rooms R
+WHERE B.Branch_id = R.Branch_id;
+
+--3. Display guest data along with the bookings they made. 
+SELECT * FROM Customer;
+SELECT * FROM Booking;
+
+SELECT C.*, B.Booking_id, B.Room_Number, B.Check_in_Date, B.Check_out_Date
+FROM Customer C, Booking B
+WHERE C.Customer_id = B.Customer_id;
+
+--4. Display bookings for hotels in 'Hurghada' or 'Sharm El Sheikh'. 
+SELECT * FROM Staff_Check_Out_Booking;
+SELECT * FROM Booking;
+SELECT * FROM Branch;
+SELECT * FROM Staff;
+
+SELECT B.*
+FROM Booking B INNER JOIN Staff_Check_Out_Booking SKOB ON B.Booking_id = SKOB.Booking_id 
+INNER JOIN Staff S ON S.Staff_id = SKOB.Staff_id
+INNER JOIN Branch H ON H.Branch_id = S.Branch_id
+WHERE H.Branch_Name = 'Hilton Riyadh Branch';
+
+--5. Display all room records where room type starts with "S" (e.g., "Suite", "Single"). 
+SELECT * FROM Rooms WHERE Room_Type LIKE 'S%';
+
+--6. List guests who booked rooms priced between 1500 and 2500 LE. 
+SELECT * FROM Rooms;
+SELECT * FROM Booking;
+SELECT * FROM Customer;
+
+SELECT C.*
+FROM Customer C INNER JOIN Rooms R ON C.Customer_id = R.Customer_id
+INNER JOIN Booking B ON C.Customer_id = B.Customer_id
+WHERE R.Nightly_Rate between 500 and 2500;
+
+--7. Retrieve guest names who have bookings marked as 'Confirmed' in hotel "Hilton Downtown". 
+SELECT * FROM Branch;
+SELECT * FROM Booking;
+SELECT * FROM Customer;
+SELECT * FROM Rooms;
+
+SELECT C.Customer_Name
+FROM Booking B INNER JOIN Customer C ON C.Customer_id = B.Customer_id 
+INNER JOIN Rooms R ON  R.Customer_id = C.Customer_id
+INNER JOIN Branch H ON H.Branch_id = R.Branch_id
+WHERE H.Location = 'Riyadh, Saudi Arabia';
+
+--8. Find guests whose bookings were handled by staff member "Mona Ali". 
+SELECT * FROM Staff;
+SELECT * FROM Booking;
+SELECT * FROM Customer;
+SELECT * FROM Rooms;
+SELECT * FROM Branch;
+
+SELECT C.Customer_Name
+FROM Booking B INNER JOIN Customer C ON C.Customer_id = B.Customer_id 
+INNER JOIN Rooms R ON  R.Customer_id = C.Customer_id
+INNER JOIN Branch H ON H.Branch_id = R.Branch_id
+INNER JOIN Staff S ON H.Branch_id = S.Branch_id
+WHERE S.Staff_Name = 'Sara Al-Mutairi';
+
+--9. Display each guest’s name and the rooms they booked, ordered by room type. 
+SELECT * FROM Customer;
+SELECT * FROM Rooms;
+
+SELECT C.Customer_Name, R.Room_Number
+FROM Customer C, Rooms R
+WHERE C.Customer_id = R.Customer_id
+ORDER BY R.Room_Type;
+
+--10. For each hotel in 'Cairo', display hotel ID, name, manager name, and contact info. 
+SELECT * FROM Branch;
+SELECT * FROM Staff;
+
+SELECT B.Branch_id, B.Branch_Name, S.Staff_Name
+FROM Branch B, Staff S
+WHERE B.Branch_id = S.Branch_id;
+
+--11. Display all staff members who hold 'Manager' positions. 
+
+SELECT * FROM Staff WHERE Branch_id IS NOT NULL;
+
+--12. Display all guests and their reviews, even if some guests haven't submitted any reviews. 
