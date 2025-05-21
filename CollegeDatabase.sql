@@ -1,4 +1,4 @@
-CREATE DATABASE CollegeManagmenet;
+﻿CREATE DATABASE CollegeManagmenet;
 
 USE CollegeManagmenet;
 
@@ -212,3 +212,89 @@ INSERT INTO Students_Course (S_id, Course_id) VALUES (5, 5);
 
 
 SELECT * FROM Students_Course;
+
+--------------------------------------------------------------TASK 8------------------------------------------------------------
+--1. Display the department ID, name, and the full name of the faculty managing it. 
+SELECT * FROM Department;
+SELECT * FROM Faculty;
+
+SELECT D.*, F.F_Name as 'Faculty_Name'
+FROM Department D, Faculty F
+WHERE D.Department_id = F.D_id;
+
+--2. Display each program's name and the name of the department offering it. 
+SELECT * FROM Department;
+SELECT * FROM Course;
+
+SELECT C.Course_Name, D.Department_Name
+FROM Department D, Course C
+WHERE D.Department_id = C.D_id;
+
+--3. Display the full student data and the full name of their faculty advisor. 
+SELECT * FROM Students;
+SELECT * FROM Faculty;
+
+SELECT S.*, F.F_Name as 'Faculty_Name'
+FROM Students S, Faculty F
+WHERE F.F_id = S.F_id;
+
+--4. Display class IDs, course titles, and room locations for classes in buildings 'A' or 'B'. 
+--SELECT * FROM Course;
+--SELECT * FROM Exam;
+--SELECT * FROM Subject;
+
+--5. Display full data about courses whose titles start with "I" (e.g., "Introduction to..."). 
+SELECT * FROM Course;
+INSERT INTO Course (Course_Name, Duration, D_id) VALUES ('Introduction to life', '03:00:00.0000000', 1);
+SELECT * FROM Course WHERE Course_Name LIKE 'I%';
+
+--6. Display names of students in program ID 3 whose GPA is between 2.5 and 3.5. 
+SELECT * FROM Course;
+SELECT * FROM Students;
+SELECT * FROM Department;
+SELECT * FROM Faculty;
+
+SELECT (S.Fname + ' ' + S.Lname) as 'Student Name'
+FROM Students S INNER JOIN Faculty F ON F.F_id = S.F_id INNER JOIN Department D ON D.Department_id = F.D_id INNER JOIN  Course C ON D.Department_id = C.D_id
+WHERE C.Course_id = 3;
+
+--7. Retrieve student names in the Engineering program who earned grades ≥ 90 in the "Database" course. 
+--SELECT * FROM Course;
+--SELECT * FROM Students;
+--SELECT * FROM Subject;
+
+--8. Find names of students who are advised by "Dr. Ahmed Hassan". 
+SELECT * FROM Students;
+SELECT * FROM Faculty;
+
+
+SELECT (S.Fname + ' ' + S.Lname) as 'Student Name'
+FROM Students S INNER JOIN Faculty F
+ON F.F_id = S.F_id
+WHERE F.F_Name = 'Dr. Alice Morgan';
+
+--9. Retrieve each student's name and the titles of courses they are enrolled in, ordered by course title. 
+SELECT * FROM Students;
+SELECT * FROM Subject;
+SELECT * FROM Faculty;
+
+SELECT (S.Fname + ' ' + S.Lname) as 'Student Name', SU.Subject_Name as 'Subject Name'
+FROM Students S INNER JOIN Faculty F ON F.F_id = S.F_id INNER JOIN Subject SU ON F.F_id = SU.F_id
+ORDER BY SU.Subject_Name;
+
+--10. For each class in Building 'Main', retrieve class ID, course name, department name, and faculty name teaching the class. 
+--11. Display all faculty members who manage any department. 
+SELECT * FROM Department;
+SELECT * FROM Faculty;
+
+SELECT F.F_Name as 'Faculty', D.Department_Name as 'Department They Manage'
+FROM Department D, Faculty F
+WHERE D.Department_id = F.D_id;
+
+--12. Display all students and their advisors' names, even if some students don’t have advisors yet. 
+SELECT * FROM Students;
+SELECT * FROM Faculty;
+
+SELECT (S.Fname + ' ' + S.Lname) as 'Student Name', F.F_Name as 'Faculty'
+FROM Students S, Faculty F
+WHERE F.F_id = S.F_id;
