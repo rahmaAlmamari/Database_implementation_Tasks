@@ -59,3 +59,13 @@ SELECT * FROM Employee;
 
 SELECT MIN(salary) as 'Lowest Salary of Employees', MAX(salary) as 'Highest Salary of Employees'  FROM Employee;
 
+------------------------------------------------------------GROUP BY ---------------------------------------------------------
+--Example 1: Group By Single Column (Employee name with total salary) 
+SELECT * FROM Employee;
+
+SELECT SUM(salary) as 'Total Salary of Employees' FROM Employee GROUP BY name;
+--Example 2: Group By Multiple Columns (Student subject and year) 
+SELECT * FROM Student;
+
+SELECT year, subject FROM Student GROUP BY subject, year;
+
