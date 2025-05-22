@@ -1,4 +1,4 @@
-
+﻿
 Create Database  GTR;
  USE GTR;
 
@@ -69,3 +69,12 @@ SELECT * FROM Student;
 
 SELECT year, subject FROM Student GROUP BY subject, year;
 
+--------------------------------------------------------------------------HAVING -------------------------------------------------------------------
+--Example 1: Departments with total salary ≥ 100,000 
+SELECT * FROM Employee;
+
+SELECT SUM(salary)as 'Total Salary', department  FROM Employee GROUP BY department HAVING SUM(salary) >= 100000;
+--Example 2: Subjects with more than 1 student in any year 
+SELECT * FROM Student;
+
+SELECT count (subject) as 'Studen number in the subject' FROM Student GROUP BY year HAVING count(id) > 1;
