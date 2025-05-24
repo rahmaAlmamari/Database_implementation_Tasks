@@ -111,4 +111,46 @@ SELECT ReleaseYear, AVG(DurationMinutes) AS AverageDuration
 FROM Movies
 GROUP BY ReleaseYear;
 
+--Advanced Level (Challenging Scenarios) 
+--7. Most Watched Movie 
+SELECT TOP 1 M.Title, SUM(W.WatchDuration) AS TotalWatchTime
+FROM Movies M
+JOIN WatchHistory W ON M.MovieID = W.MovieID
+GROUP BY M.Title
+ORDER BY TotalWatchTime DESC;
 
+
+--8. Users Who Watched More Than 100 Minutes 
+SELECT U.FullName, SUM(W.WatchDuration) AS TotalWatchTime
+FROM Users U
+JOIN WatchHistory W ON U.UserID = W.UserID
+GROUP BY U.FullName
+HAVING SUM(W.WatchDuration) > 100;
+
+--9. Total Watch Time per Genre 
+SELECT M.Genre, SUM(W.WatchDuration) AS TotalWatchTime
+FROM Movies M
+JOIN WatchHistory W ON M.MovieID = W.MovieID
+GROUP BY M.Genre;
+
+--10. Identify Binge Watchers (Users Who Watched 2 or More Movies in One Day) 
+SELECT U.FullName, W.WatchDate, COUNT(*) AS MoviesWatched
+FROM Users U
+JOIN WatchHistory W ON U.UserID = W.UserID
+GROUP BY U.FullName, W.WatchDate
+HAVING COUNT(*) >= 2;
+
+--11. Genre Popularity (Total Watch Duration by Genre) 
+SELECT M.Genre, SUM(W.WatchDuration) AS TotalDuration
+FROM Movies M
+JOIN WatchHistory W ON M.MovieID = W.MovieID
+GROUP BY M.Genre
+ORDER BY TotalDuration DESC;
+
+--12. User Retention Insight: Number of Users Joined Each Month 
+SELECT 
+  FORMAT(JoinDate, 'yyyy-MM')AS JoinMonth,
+  COUNT(*) AS NumberOfUsers
+FROM Users
+GROUP BY FORMAT(JoinDate, 'yyyy-MM')
+ORDER BY JoinMonth;
