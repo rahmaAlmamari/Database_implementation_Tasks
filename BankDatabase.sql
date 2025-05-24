@@ -162,3 +162,80 @@ INSERT INTO Transactions_Type (T_Type, Transactions_id) VALUES
 ('Withdrawal', 5);
 
 SELECT * FROM Transactions_Type;
+
+----------------------------------------Bank Database – DQL & DML Tasks -------------------------
+--1. Display all customer records. 
+SELECT * FROM Customer;
+
+--2. Display customer full name, phone, and membership start date. 
+SELECT * FROM Customer;
+SELECT * FROM Customer_Phone_Number;
+SELECT * FROM Account;
+
+SELECT C.Customer_Name, CPN.Customer_Phone, A.Date_of_Creation
+FROM Customer C INNER JOIN Customer_Phone_Number CPN ON C.Customer_id = CPN.Customer_id
+INNER JOIN Account A ON C.Customer_id = A.Customer_id;
+
+--3. Display each loan ID, amount, and type. 
+SELECT Loans_id, Amount, Loans_Type FROM Loans;
+
+--4. Show account number and annual interest (assume 5% of balance) as "AnnualInterest". 
+SELECT Account_Balance, (Account_Balance - (0.5 * Account_Balance)) as 'AnnualInterest' FROM Account;
+
+--5. List customers who have a loan amount > 100000 LE. 
+SELECT * FROM Customer;
+SELECT * FROM Loans;
+
+SELECT C.*
+FROM Customer C INNER JOIN Loans L ON C.Customer_id = L.Customer_id
+WHERE L.Amount > 10000;
+
+--6. List accounts with balances above 20000. 
+SELECT * FROM Account WHERE Account_Balance > 20000;
+
+
+--7. Show employee names and roles working at branch 'Downtown'. 
+SELECT * FROM Employee;
+SELECT * FROM Branch;
+
+SELECT E.Employee_Name, E.Employee_Position
+FROM Branch B INNER JOIN Employee E ON B.Branch_id = E.Branch_id
+WHERE B.Branch_Address = '123 Main St';
+
+--8. Display branch ID, name managed by employee ID = 7001. 
+SELECT * FROM Employee;
+SELECT * FROM Branch;
+
+SELECT B.*
+FROM Branch B INNER JOIN Employee E ON B.Branch_id = E.Branch_id
+WHERE E.Branch_id = 1 AND E.Employee_Position = 'Manager';
+
+--9. List all accounts for customer ID = 800003. 
+SELECT * FROM Account;
+
+SELECT A.*
+FROM Customer C INNER JOIN Account A ON C.Customer_id = A.Customer_id
+WHERE C.Customer_id = 1;
+
+--10. Insert yourself as a customer and open an account with balance = 10000. 
+INSERT INTO Customer (Customer_Name, Customer_Address, Action_Type, Employee_id) VALUES 
+('Rahma Almamari', '1998 E St', 'Poen Account', 5);
+
+SELECT * FROM Customer;
+
+INSERT INTO Account (Date_of_Creation, Account_Number, Account_Balance, Account_Type, Customer_id) VALUES 
+('2025-03-05', 101998, 10000, 'Fixed Deposit', 5);
+
+SELECT * FROM Account;
+
+--11. Insert another customer with NULL values for phone and address.
+INSERT INTO Customer (Customer_Name, Customer_Address, Action_Type, Employee_id) VALUES 
+('Ali', null, 'Poen Account', 5);
+--it can not insert a null value 
+SELECT * FROM Customer;
+--12. Increase your account balance by 20%. 
+SELECT * FROM Customer;
+SELECT * FROM Account;
+UPDATE Account
+SET Account_Balance = Account_Balance + (Account_Balance * 0.2)
+WHERE Customer_id = 6;
