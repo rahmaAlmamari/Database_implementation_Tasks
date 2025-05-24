@@ -76,5 +76,39 @@ SELECT MIN(JoinDate) AS EarliestJoinDate FROM Users;
 --6. Latest Movie Release Year 
 SELECT MAX(ReleaseYear) AS LatestReleaseYear FROM Movies;
 
+--Intermediate Level (Deeper Insights) 
+--4. Number of Users Per Subscription Type 
+SELECT SubscriptionType, COUNT(*) AS NumberOfUsers
+FROM Users
+GROUP BY SubscriptionType;
+
+--5. Total Watch Time per User 
+SELECT U.FullName, SUM(W.WatchDuration) AS TotalWatchTime
+FROM Users U
+JOIN WatchHistory W ON U.UserID = W.UserID
+GROUP BY U.FullName;
+
+--6. Average Watch Duration per Movie 
+SELECT M.Title, AVG(W.WatchDuration) AS AverageWatchDuration
+FROM Movies M
+JOIN WatchHistory W ON M.MovieID = W.MovieID
+GROUP BY M.Title;
+
+--7. Average Watch Time per Subscription Type 
+SELECT U.SubscriptionType, AVG(W.WatchDuration) AS AverageWatchTime
+FROM Users U
+JOIN WatchHistory W ON U.UserID = W.UserID
+GROUP BY U.SubscriptionType;
+
+--8. Number of Views per Movie (Including Zero) 
+SELECT M.Title, COUNT(W.WatchID) AS NumberOfViews
+FROM Movies M
+LEFT JOIN WatchHistory W ON M.MovieID = W.MovieID
+GROUP BY M.Title;
+
+--9. Average Movie Duration per Release Year 
+SELECT ReleaseYear, AVG(DurationMinutes) AS AverageDuration
+FROM Movies
+GROUP BY ReleaseYear;
 
 
