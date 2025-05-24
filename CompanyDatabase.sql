@@ -96,7 +96,7 @@ VALUES
 ('Jane', 'B', 'Doe', '1990-08-23', '456 Oak St', 'F', 60000, 15, 3),
 ('Alice', 'C', 'Johnson', '1987-02-15', '789 Maple St', 'F', 62000, 15, 4),
 ('Bob', 'D', 'Brown', '1992-11-05', '101 Pine St', 'M', 58000, 15, 2),
-('Eve', 'E', 'Davis', '1995-06-30', '202 Birch St', 'F', 54000, 15, 6);
+('Eve', 'E', 'Davis', '1995-06-30', '202 Birch St', 'F', 54000, 15, 5);
 
 UPDATE Department 
 SET Mgr_ssn = 15;
@@ -108,7 +108,7 @@ VALUES
 ('Budget Tracker', 'Chicago', 3),
 ('AI Research', 'San Francisco', 4),
 ('Brand Campaign', 'Los Angeles', 5),
-('Tech Support Portal', 'Houston', 6);
+('Tech Support Portal', 'Houston', 5);
 
 SELECT * FROM Project;
 
@@ -119,7 +119,7 @@ VALUES
 ('Chicago', 3),
 ('San Francisco', 4),
 ('Los Angeles', 5),
-('Houston', 6);
+('Houston', 5);
 
 INSERT INTO Dpart_Location (Dlocation, Dnumber)
 VALUES ('Boston', 2); -- Additional location for department 2
@@ -129,10 +129,35 @@ SELECT * FROM Dpart_Location;
 ----INSERT DATA TO Works_On TABLE 
 INSERT INTO Works_On (Essn, Pno, Hours)
 VALUES
-(15, 1, 20),
-(16, 2, 25),
-(17, 3, 30),
-(18, 4, 15),
-(19, 5, 10);
+(1, 6, 20),
+(6, 7, 25),
+(17, 8, 30),
+(18, 9, 15),
+(15, 10, 10);
 
 SELECT * FROM Works_On;
+
+----------------------------------------------Task 9 (Aggregation Functions ) -----------------------------
+--1.  Count total number of employees in the Employees table.
+SELECT COUNT(*) AS TotalEmployees
+FROM Employee;
+
+--2.  Calculate average salary from the Salaries table. 
+SELECT AVG(Salary) AS AverageSalary
+FROM Employee;
+
+--3.  Count employees in each department using Employees grouped by Dept_ID. 
+SELECT Dno AS DepartmentID, COUNT(*) AS EmployeeCount
+FROM Employee
+GROUP BY Dno;
+
+--4.  Find total salary per department by joining Employees and Salaries. 
+SELECT Dno AS DepartmentID, SUM(Salary) AS TotalSalary
+FROM Employee
+GROUP BY Dno;
+
+--5. Show departments (Dept_ID) having more than 5 employees with their counts. 
+SELECT Dno AS DepartmentID, COUNT(*) AS EmployeeCount
+FROM Employee
+GROUP BY Dno
+HAVING COUNT(*) > 5;
