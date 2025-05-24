@@ -177,4 +177,100 @@ INNER JOIN Orders O ON C.CustomerID = O.CustomerID
 INNER JOIN OrderItems OI ON O.OrderID = OI.OrderID
 GROUP BY C.FullName, R.CustomerID;
 
---11. 
+--11. The business team wants to automatically increase prices for high-demand items. 
+--    Update the price of any menu item that has been ordered more than 3 times by 10%. 
+SELECT * FROM OrderItems;
+SELECT * FROM Orders;
+SELECT * FROM Menu;
+
+
+UPDATE M
+SET M.Price = M.Price * 1.10
+FROM Menu M
+JOIN (
+    SELECT OI.ItemName, O.RestaurantID, SUM(OI.Quantity) AS TotalOrdered
+    FROM OrderItems OI
+    JOIN Orders O ON OI.OrderID = O.OrderID
+    GROUP BY OI.ItemName, O.RestaurantID
+    HAVING SUM(OI.Quantity) > 3
+) Agg ON M.ItemName = Agg.ItemName AND M.RestaurantID = Agg.RestaurantID;
+
+--12. To comply with data privacy regulations, the system must remove customers who: 
+--    • Have never placed an order, 
+--    • And were not referred by another customer. 
+--    Use DELETE with a LEFT JOIN to Orders and check ReferralID IS NULL. 
+
+DELETE C
+FROM Customers C
+LEFT JOIN Orders O ON C.CustomerID = O.CustomerID
+WHERE O.CustomerID IS NULL
+  AND C.ReferralID IS NULL;
+
+--13. The pricing team wants to reduce menu prices by 15% for all items belonging to restaurants that never received any orders. 
+--    This is a quick way to encourage more orders from underperforming partners. Your Task: 
+--    Update prices in the Menu table using a JOIN with Restaurants and Orders. 
+--    Only update menu items for restaurants that do not appear at all in the Orders table. 
+--    Hint: Use a LEFT JOIN and check for Orders.OrderID IS NULL in the WHERE clause. 
+--    Only UPDATE records in the Menu table — do not use subqueries or functions. 
+
+SELECT * FROM Menu;
+SELECT * FROM Orders;
+SELECT * FROM Restaurants;
+
+UPDATE M
+SET M.Price = M.Price * 0.85
+FROM Menu M
+JOIN Restaurants R ON M.RestaurantID = R.RestaurantID
+LEFT JOIN Orders O ON R.RestaurantID = O.RestaurantID
+WHERE O.OrderID IS NULL;
+
+--14. Scenario: 
+--    The marketing team asks you to manually insert VIP customers into a new table 
+--    VIPCustomers(CustomerID, FullName). 
+--    They provide you a shortlist of Customer IDs of people who made several purchases. 
+--    Your job is to: 
+--    Your Task: 
+--    Manually use INSERT statements to add at least two customers to the VIPCustomers table, 
+--    but before inserting them, write a SELECT statement using JOINs between Customers, Orders, and 
+--    OrderItems 
+--    to confirm that those customers appear in both the Orders and OrderItems tables. 
+--    Hint: First, use a JOIN to verify which customers placed orders and have items. 
+--    Then, manually insert a few of them using INSERT INTO VIPCustomers VALUES (..., ...) 
+CREATE TABLE VIPCustomers (
+    CustomerID INT PRIMARY KEY,
+    FullName NVARCHAR(100)
+);
+
+SELECT DISTINCT C.CustomerID, C.FullName
+FROM Customers C
+JOIN Orders O ON C.CustomerID = O.CustomerID
+JOIN OrderItems OI ON O.OrderID = OI.OrderID;
+
+INSERT INTO VIPCustomers VALUES (1, 'Ahmed AlHarthy');
+INSERT INTO VIPCustomers VALUES (2, 'Fatma AlBalushi');
+
+--15 . Scenario: 
+--     Restaurant owners want to see a live summary of current orders including: 
+--     • Customer name 
+--     • Restaurant name 
+--     • Ordered item names 
+--     • Order status 
+--     Your Task: 
+--     Write a SELECT query that uses multiple JOINs between at least 4 tables: 
+--     Customers, Orders, Restaurants, and OrderItems. 
+--     Ensure the output shows one row per item in the order, with all related names and the order 
+--     status. 
+SELECT 
+    C.FullName AS CustomerName,
+    R.Name AS RestaurantName,
+    OI.ItemName AS OrderedItem,
+    O.Status AS OrderStatus
+FROM OrderItems OI
+JOIN Orders O ON OI.OrderID = O.OrderID
+JOIN Customers C ON O.CustomerID = C.CustomerID
+JOIN Restaurants R ON O.RestaurantID = R.RestaurantID;
+
+
+
+
+
