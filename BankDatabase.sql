@@ -239,3 +239,31 @@ SELECT * FROM Account;
 UPDATE Account
 SET Account_Balance = Account_Balance + (Account_Balance * 0.2)
 WHERE Customer_id = 6;
+
+------------------------------------TASK 9---------------------------------------------
+--21. Count total number of customers in Customers table.
+SELECT COUNT(*) AS Total_Customers
+FROM Customer;
+
+--22. Average account balance from Accounts table.
+SELECT AVG(Account_Balance) AS Average_Account_Balance
+FROM Account;
+
+--23. Count accounts per branch grouped by Branch_ID. 
+SELECT b.Branch_id,COUNT(a.Account_id) AS Accounts_Count
+FROM Account a
+JOIN Customer c ON a.Customer_id = c.Customer_id
+JOIN Employee e ON c.Employee_id = e.Employee_id
+JOIN Branch b ON e.Branch_id = b.Branch_id
+GROUP BY b.Branch_id;
+
+--24. Sum loan amounts per customer from Loans grouped by Customer_ID.
+SELECT Customer_id,SUM(Amount) AS Total_Loan_Amount
+FROM Loans
+GROUP BY Customer_id;
+
+--25.  List customers with total loan > 200000 grouped by Customer_ID. 
+SELECT Customer_id, SUM(Amount) AS Total_Loan_Amount
+FROM Loans
+GROUP BY Customer_id
+HAVING SUM(Amount) > 200000;
