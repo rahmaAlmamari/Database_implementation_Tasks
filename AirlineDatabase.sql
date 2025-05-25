@@ -339,4 +339,62 @@ FROM Flight F, Flight_Leg FL
 WHERE F.Flight_Number = FL.Flight_Number;
 
 --11. Display all staff members who are assigned as supervisors for flights. 
---12. Display all bookings and their related passengers, even if some bookings are unpaid. 
+--12. Display all bookings and their related passengers, even if some bookings are unpaid.
+
+-----------------------------------------------------TASK 9------------------------------------------
+--11. Count total flights in FLIGHT table.
+SELECT count(Flight_Number) as 'Total Number of Flights' FROM Flight;
+
+--12. Average available seats per leg using FLIGHT_LEG table. 
+SELECT * FROM Flight_Leg;
+SELECT * FROM Seat;
+SELECT * FROM Airport;
+
+SELECT AVG(S.Seat_Number) as 'Average available seats per leg'
+FROM Airport A INNER JOIN Flight_Leg F ON A.Airport_code = F.Airport_code
+INNER JOIN Seat S ON A.Airport_code = S.Airport_code;
+
+--13. Count flights scheduled per airline from FLIGHT grouped by Airline_ID. 
+SELECT * FROM Flight
+SELECT * FROM Airplane;
+
+SELECT Airline, COUNT(*) AS Flight_Count
+FROM Flight
+GROUP BY Airline;
+ 
+
+--14. Total payments per leg using LEG_INSTANCE table grouped by Flight_Leg_ID. 
+SELECT 
+    LI.Leg_Number,
+    LI.Airport_code,
+    F.Flight_Number,
+    MIN(Fa.Amount) AS Fare_Amount,  -- Assuming lowest fare per flight
+    SUM(LI.Number_of_Available_Seats * MIN(Fa.Amount)) OVER (PARTITION BY LI.Leg_Number, LI.Airport_code) AS Total_Payment
+FROM 
+    Leg_Instance LI
+JOIN 
+    Flight_Leg FL ON LI.Leg_Number = FL.Leg_Number AND LI.Airport_code = FL.Airport_code
+JOIN 
+    Flight F ON FL.Flight_Number = F.Flight_Number
+JOIN 
+    Fare Fa ON F.Flight_Number = Fa.Flight_Number
+GROUP BY 
+    LI.Leg_Number, LI.Airport_code, F.Flight_Number;
+
+--15. List flight legs with total payments > 10000 grouped by Flight_Leg_ID. 
+SELECT 
+    LI.Leg_Number,
+    LI.Airport_code,
+    SUM(LI.Number_of_Available_Seats * MIN(Fa.Amount)) AS Total_Payment
+FROM 
+    Leg_Instance LI
+JOIN 
+    Flight_Leg FL ON LI.Leg_Number = FL.Leg_Number AND LI.Airport_code = FL.Airport_code
+JOIN 
+    Fare Fa ON FL.Flight_Number = Fa.Flight_Number
+GROUP BY 
+    LI.Leg_Number, LI.Airport_code
+HAVING 
+    SUM(LI.Number_of_Available_Seats * MIN(Fa.Amount)) > 10000;
+
+
