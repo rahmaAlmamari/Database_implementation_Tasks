@@ -55,3 +55,28 @@ FROM Trainees
 INTERSECT
 SELECT Email
 FROM Applicants;
+
+---------------------------------------------------Part 2: DROP, DELETE, TRUNCATE Observation -----------------------------------
+--Let’s test destructive commands. 
+--4. Try DELETE FROM Trainees WHERE Program = 'Outsystems'. 
+--   o Check if the table structure still exists. 
+DELETE FROM Trainees WHERE Program = 'Outsystems';
+
+SELECT * FROM Trainees;
+
+--the table structure is still exists
+
+
+--5. Try TRUNCATE TABLE Applicants. 
+--   o What happens to the data? Can you roll it back? 
+TRUNCATE TABLE Applicants;
+SELECT * FROM Applicants;
+
+--the table is exists but it is empty and we can not roll back we just can insert the data again
+
+--6. Try DROP TABLE Applicants. 
+--   o What happens if you run a SELECT after that? 
+DROP TABLE Applicants;
+SELECT * FROM Applicants; -- it show error becouse Applicants table it do not exists any more
+
+--Write your observations after each command. 
