@@ -1,4 +1,4 @@
-CREATE DATABASE SubqueryDatabaseTask;
+﻿CREATE DATABASE SubqueryDatabaseTask;
 USE SubqueryDatabaseTask;
 --Tables -- Trainees Table 
 CREATE TABLE Trainees ( 
@@ -57,7 +57,7 @@ SELECT Email
 FROM Applicants;
 
 ---------------------------------------------------Part 2: DROP, DELETE, TRUNCATE Observation -----------------------------------
---Let�s test destructive commands. 
+--Let’s test destructive commands. 
 --4. Try DELETE FROM Trainees WHERE Program = 'Outsystems'. 
 --   o Check if the table structure still exists. 
 DELETE FROM Trainees WHERE Program = 'Outsystems';
@@ -101,5 +101,23 @@ SELECT Email
 FROM Applicants
 );
 
+------------------------------------------------Batch Script & Transactions -----------------------------------------------------
+--▪ Starts a transaction 
+--▪ Tries to insert two new applicants 
+--▪ The second insert should have a duplicate ApplicantID (to force failure) 
+--▪ Rollback the whole transaction if any error occurs 
+
+begin try
+	begin transaction
+INSERT INTO Applicants VALUES (104, 'Zahra Al Amri', 'zahra.a@example.com', 'Referral', '2025
+05-10'); 
+INSERT INTO Applicants VALUES (104, 'Error User', 'error@example.com', 'Website', '2025-05
+11'); -- Duplicate ID 
+	commit
+end try
+begin catch
+	ROLLBACK 
+	select ERROR_LINE() ,ERROR_MESSAGE(), ERROR_NUMBER()
+end catch
 
 
