@@ -249,3 +249,31 @@ WHERE B.Branch_id = S.Branch_id;
 SELECT * FROM Staff WHERE Branch_id IS NOT NULL;
 
 --12. Display all guests and their reviews, even if some guests haven't submitted any reviews. 
+
+------------------------------------------------------TASK 9---------------------------------------------------------
+--16. Count total rooms across all hotels from Rooms table. 
+SELECT COUNT(*) AS Total_Rooms
+FROM Rooms;
+
+--17. Average room price per night from Rooms table. 
+SELECT AVG(Nightly_Rate) AS Average_Nightly_Rate
+FROM Rooms;
+
+--18. Count rooms per hotel grouped by Hotel_ID. 
+SELECT Branch_id AS Hotel_ID,COUNT(Room_Number) AS Room_Count
+FROM Rooms
+GROUP BY Branch_id;
+
+--19.  Sum booking cost per guest from Bookings grouped by Guest_ID. 
+SELECT b.Customer_id AS Guest_ID, SUM(DATEDIFF(DAY, b.Check_in_Date, b.Check_out_Date) * r.Nightly_Rate) AS Total_Booking_Cost
+FROM Booking b
+JOIN Rooms r ON b.Room_Number = r.Room_Number
+GROUP BY b.Customer_id;
+
+--20.  Guests with total bookings > 5000 grouped by Guest_ID. 
+SELECT b.Customer_id AS Guest_ID, SUM(DATEDIFF(DAY, b.Check_in_Date, b.Check_out_Date) * r.Nightly_Rate) AS Total_Booking_Cost
+FROM Booking b
+JOIN Rooms r ON b.Room_Number = r.Room_Number
+GROUP BY b.Customer_id
+HAVING SUM(DATEDIFF(DAY, b.Check_in_Date, b.Check_out_Date) * r.Nightly_Rate) > 5000;
+
