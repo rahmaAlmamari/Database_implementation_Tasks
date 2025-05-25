@@ -80,3 +80,26 @@ DROP TABLE Applicants;
 SELECT * FROM Applicants; -- it show error becouse Applicants table it do not exists any more
 
 --Write your observations after each command. 
+
+---------------------------------------Part 3: Self-Discovery & Applied Exploration ---------------------------------------------
+--o Write a query to find all trainees whose emails appear in the applicants table. 
+
+SELECT * FROM Trainees WHERE Email = (
+SELECT Email
+FROM Trainees
+INTERSECT
+SELECT Email
+FROM Applicants
+);
+
+--Delete all applicants whose email matches someone in the trainees table. 
+DELETE FROM Applicants WHERE Email = (
+SELECT Email
+FROM Trainees
+INTERSECT
+SELECT Email
+FROM Applicants
+);
+
+
+
