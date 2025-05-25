@@ -298,3 +298,33 @@ SELECT * FROM Faculty;
 SELECT (S.Fname + ' ' + S.Lname) as 'Student Name', F.F_Name as 'Faculty'
 FROM Students S, Faculty F
 WHERE F.F_id = S.F_id;
+
+-------------------------------------------------------TASK 9-------------------------------------------------
+--6.  Count total number of students in the Student table. 
+SELECT count(S_id) as 'Total Number of Students' FROM Students;
+
+--7. Count number of students per city (group by City in Student).
+SELECT * FROM Students;
+SELECT count(S_id) as 'Total Number of Students Per City' FROM Students GROUP BY City;
+--8. Count students per course using Enrols (group by CourseID). 
+SELECT * FROM Students;
+SELECT * FROM Course;
+SELECT * FROM Students_Course;
+SELECT count(S.S_id) as 'Total Number of Students Per Course' 
+FROM Students S INNER JOIN Students_Course SC ON S.S_id = SC.S_id
+INNER JOIN Course C ON C.Course_id = SC.Course_id
+GROUP BY C.Course_id;
+--9. Count number of courses per department using Course (group by DepartmentID). 
+SELECT * FROM Course;
+SELECT * FROM Department;
+
+SELECT count(C.Course_id) as 'Number of Courses Per Department'
+FROM Department D INNER JOIN Course C ON D.Department_id = C.D_id
+GROUP BY D.Department_id;
+--10.  Count number of students assigned to each hostel (group by HostelID). 
+SELECT * FROM Students;
+SELECT * FROM Hostel;
+
+SELECT count(S.S_id) as 'Number of Students Per Hostel'
+FROM Students S INNER JOIN Hostel H ON S.S_id = H.S_id
+GROUP BY H.Hostel_id;
