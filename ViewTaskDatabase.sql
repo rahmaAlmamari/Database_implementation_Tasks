@@ -72,3 +72,5 @@ SELECT Name, Salary, DeptID
 FROM Employees
 WHERE Salary > 60000;
 
+
+
