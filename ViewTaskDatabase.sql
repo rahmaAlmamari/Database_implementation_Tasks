@@ -49,3 +49,16 @@ SELECT
 FROM Employees e
 JOIN Departments d ON e.DeptID = d.DeptID;
 
+-- 3. Create a View `ChicagoEmployees`
+--   - Show employees working in the Chicago department.
+
+CREATE VIEW ChicagoEmployees AS
+SELECT 
+    e.EmpID,
+    e.Name, 
+    e.Salary, 
+    e.DeptID
+FROM Employees e
+JOIN Departments d ON e.DeptID = d.DeptID
+WHERE d.Location = 'Chicago';
+
