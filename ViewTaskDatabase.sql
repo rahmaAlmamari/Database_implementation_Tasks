@@ -62,3 +62,13 @@ FROM Employees e
 JOIN Departments d ON e.DeptID = d.DeptID
 WHERE d.Location = 'Chicago';
 
+-- 4. Update the View `HighEarners`
+--   - Modify it to also include `DeptID`.
+
+DROP VIEW HighEarners;
+
+CREATE VIEW HighEarners AS
+SELECT Name, Salary, DeptID
+FROM Employees
+WHERE Salary > 60000;
+
