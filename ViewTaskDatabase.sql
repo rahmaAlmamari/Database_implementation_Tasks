@@ -72,5 +72,16 @@ SELECT Name, Salary, DeptID
 FROM Employees
 WHERE Salary > 60000;
 
+ --5. Try to Update Data Through View
+  -- - Try updating an employee's salary through the `HighEarners` view.
+ --  - Was it allowed? Why or why not?
+ -- Yes, this update will succeed because:
+    --The view is based on a single base table (Employees).
+    --The columns being updated (Salary) are directly mapped to the base table.
+    --The view does not contain aggregation, DISTINCT, GROUP BY, JOIN, or subqueries that could make it non-updatable.
+
+ UPDATE HighEarners
+SET Salary = 72000
+WHERE Name = 'Eve';
 
 
