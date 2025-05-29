@@ -89,3 +89,16 @@ WHERE Name = 'Eve';
 
 DROP VIEW ChicagoEmployees;
 
+-- Bonus Challenge
+ --Create a view `DepartmentStats` that shows:- `DeptName`- Number of employees in each department
+ --(Hint: Use `GROUP BY` and `COUNT()`)
+
+CREATE VIEW DepartmentStats AS
+SELECT 
+    d.DeptName, 
+    COUNT(e.EmpID) AS NumEmployees
+FROM Departments d
+LEFT JOIN Employees e ON d.DeptID = e.DeptID
+GROUP BY d.DeptName;
+
+
