@@ -84,4 +84,8 @@ WHERE Salary > 60000;
 SET Salary = 72000
 WHERE Name = 'Eve';
 
+-- 6. Delete the View `ChicagoEmployees`
+--   - Use `DROP VIEW`.
+
+DROP VIEW ChicagoEmployees;
 
